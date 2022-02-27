@@ -5,6 +5,7 @@ import {
   Item,
 } from "https://deno.land/x/ddu_vim@v0.12.2/types.ts#^";
 import {
+  batch,
   Denops,
   fn,
   gather,
@@ -63,8 +64,14 @@ export class Source extends BaseSource<Params> {
       return Promise.resolve(ActionFlags.None);
     },
     delete: async ({ denops, items }: ActionArguments<Params>) => {
-      const action = items[0]?.action as ActionData;
-      await fn.histdel(denops, "cmd", action.index);
+      await batch(denops, async (denops) => {
+        for (const item of items) {
+          const action = item?.action as ActionData;
+          if (item.action) {
+            await fn.histdel(denops, "cmd", action.index);
+          }
+        }
+      });
       return Promise.resolve(ActionFlags.RefreshItems);
     },
   };
