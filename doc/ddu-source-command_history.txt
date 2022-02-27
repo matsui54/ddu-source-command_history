@@ -1,9 +1,9 @@
-*ddu-source-command_history.txt*				help source for ddu.vim
+*ddu-source-command_history.txt*	command history source for ddu.vim
 
 Author: matsui54 <haru.matu9168 at gmail.com>
 License: MIT license
 
-CONTENTS					*ddu-source-command_history-contents*
+CONTENTS				*ddu-source-command_history-contents*
 
 Introduction		|ddu-source-command_history-introduction|
 Install			|ddu-source-command_history-install|
@@ -13,10 +13,9 @@ Actions			|ddu-kind-command_history-actions|
 
 
 ==============================================================================
-INTRODUCTION				*ddu-source-command_history-introduction*
+INTRODUCTION			*ddu-source-command_history-introduction*
 
-This source collects help tags from `&runtimepath/docs/tags`.
-This also have help-kind.
+This source collects command line history.
 
 ==============================================================================
 INSTALL					*ddu-source-command_history-install*
