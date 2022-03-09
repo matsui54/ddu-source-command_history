@@ -1,4 +1,4 @@
-import { BaseKind } from "https://deno.land/x/ddu_vim@v0.12.2/types.ts#^";
+import { BaseKind } from "https://deno.land/x/ddu_vim@v1.2.0/types.ts";
 
 type Params = Record<never, never>;
 
