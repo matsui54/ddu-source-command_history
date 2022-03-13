@@ -55,7 +55,10 @@ export class Source extends BaseSource<Params> {
   actions = {
     execute: async ({ denops, items }: ActionArguments<Params>) => {
       const action = items[0]?.action as ActionData;
-      await denops.cmd(action.command);
+      await batch(denops, async (denops) => {
+        await fn.histadd(denops, "cmd", action.command);
+        await denops.cmd(action.command);
+      });
       return Promise.resolve(ActionFlags.None);
     },
     edit: async ({ denops, items }: ActionArguments<Params>) => {
