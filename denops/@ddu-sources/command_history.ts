@@ -72,17 +72,16 @@ export class Source extends BaseSource<Params> {
           const action = item?.action as ActionData;
           if (item.action) {
             await fn.histdel(denops, "cmd", action.index);
-
-            // Note: rviminfo! is broken in Vim8 before 8.2.2494
-            if (
-              await fn.has(denops, "nvim") ||
-              await fn.has(denops, "patch-8.2.2494")
-            ) {
-              await denops.cmd("wviminfo! | rviminfo!");
-            }
           }
         }
       });
+      // Note: rviminfo! is broken in Vim8 before 8.2.2494
+      if (
+        await fn.has(denops, "nvim") ||
+        await fn.has(denops, "patch-8.2.2494")
+      ) {
+        await denops.cmd("wviminfo! | rviminfo!");
+      }
       return Promise.resolve(ActionFlags.RefreshItems);
     },
   };
