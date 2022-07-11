@@ -3,13 +3,13 @@ import {
   ActionFlags,
   BaseSource,
   Item,
-} from "https://deno.land/x/ddu_vim@v1.8.4/types.ts";
+} from "https://deno.land/x/ddu_vim@v1.8.7/types.ts";
 import {
   batch,
   Denops,
   fn,
   gather,
-} from "https://deno.land/x/ddu_vim@v1.8.4/deps.ts";
+} from "https://deno.land/x/ddu_vim@v1.8.7/deps.ts";
 
 export type ActionData = {
   command: string;
