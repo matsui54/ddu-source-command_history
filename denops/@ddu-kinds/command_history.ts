@@ -1,9 +1,11 @@
-import { BaseKind } from "https://deno.land/x/ddu_vim@v2.8.4/types.ts";
+import { Actions } from "jsr:@shougo/ddu-vim@~10.4.0/types";
+import { BaseKind } from "jsr:@shougo/ddu-vim@~10.4.0/kind";
 
 type Params = Record<never, never>;
 
 export class Kind extends BaseKind<Params> {
-  params(): Params {
+  override params(): Params {
     return {};
   }
+  override actions: Actions<Params> = {}
 }

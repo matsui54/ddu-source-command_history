@@ -1,15 +1,13 @@
 import {
   ActionArguments,
   ActionFlags,
-  BaseSource,
-  Item,
-} from "https://deno.land/x/ddu_vim@v2.8.4/types.ts";
-import {
-  batch,
-  Denops,
-  fn,
-  gather,
-} from "https://deno.land/x/ddu_vim@v2.8.4/deps.ts";
+  type Item,
+} from "jsr:@shougo/ddu-vim@~10.4.0/types";
+import { BaseSource } from "jsr:@shougo/ddu-vim@~10.4.0/source";
+import { batch } from "jsr:@denops/std@~7.6.0/batch";
+import type { Denops } from "jsr:@denops/core@~7.0.0";
+import * as fn from "jsr:@denops/std@~7.6.0/function";
+import { collect } from "jsr:@denops/std@~7.5.0/batch";
 
 export type ActionData = {
   command: string;
@@ -19,8 +17,8 @@ export type ActionData = {
 type Params = Record<never, never>;
 
 export class Source extends BaseSource<Params> {
-  kind = "command_history";
-  gather(args: {
+  override kind = "command_history";
+  override gather(args: {
     denops: Denops;
     sourceParams: Params;
   }): ReadableStream<Item<ActionData>[]> {
@@ -29,11 +27,13 @@ export class Source extends BaseSource<Params> {
         const items: Item<ActionData>[] = [];
         try {
           const histnr = await fn.histnr(args.denops, "cmd") as number;
-          const hists = await gather(args.denops, async (denops) => {
+          const hists = await collect(args.denops, (denops) => {
+            const outputs: Promise<string>[] = [];
             for (let i = 1; i <= histnr; i++) {
-              await fn.histget(denops, "cmd", i);
+              outputs.push(fn.histget(denops, "cmd", i));
             }
-          }) as string[];
+            return outputs;
+          });
           for (let i = 1; i <= histnr; i++) {
             const hist = hists[i - 1];
             if (hist.trim().length) {
@@ -52,7 +52,7 @@ export class Source extends BaseSource<Params> {
     });
   }
 
-  actions = {
+  override actions = {
     execute: async ({ denops, items }: ActionArguments<Params>) => {
       const action = items[0]?.action as ActionData;
       await batch(denops, async (denops) => {
